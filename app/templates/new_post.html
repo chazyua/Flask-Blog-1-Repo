@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+
+<h1>Hello, {{ current_user.name }}</h1>
+{% else %}
+<h1>Hello, Person</h1>
+{% endif %}
+
+
+
+<div class="content-section">
+<h3>Create a new post</h3>
+<hr>
+<div class="col-md-6 offset-md-3">
+    <form action="{{ url_for('new_post') }}" method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.title.label}}
+            {{ form.title(class="form-control", placeholder="What's the title") }}
+        </div>
+        <div class="form-group">
+                {{ form.content.label}}
+                {{ form.content(class="form-control", placeholder="Type your main text here") }}
+        </div>
+        <div class="form-group">
+            {{ form.author.label}}
+            {{ form.author(class="form-control", placeholder="Who is author") }}
+        </div>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>Hello, {{ current_user.name }}</h1>
+<p>These are your posts so far...
+<br>Want to create a <a href="{{ url_for('new_post') }}">New Post</a> ?
+</p>
+
+{% if posts %}
+
+{% for post in posts %}
+    <div class="content-section">
+        <h3>{{ post.title }}</h3><hr>
+        {{ post.content }}<hr>
+        <i>{{ post.author }}</i><br>
+    </div>
+{% endfor %}
+
+{% else %}
+<h1>There's no posts available</h1>
+
+{% endif %}
+{% endblock %}
+
