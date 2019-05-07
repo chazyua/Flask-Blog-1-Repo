@@ -14,6 +14,7 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(70))
     email = db.Column(db.String(100), index=True, unique=True)
     password_hash = db.Column(db.String(180))
+    posts = db.relationship('Post', backref="author", lazy="dynamic")
 
 
     def __repr__(self):
@@ -33,8 +34,11 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title =  db.Column(db.String(70))
     content = db.Column(db.String(1000))
-    author = db.Column(db.String())
+    # author = db.Column(db.String(50))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    def __repr__(self):
+        return f"{self.author} | {self.title} | {self.content}"
 
 
 

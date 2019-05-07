@@ -9,7 +9,7 @@ from werkzeug.urls import url_parse
 @app.route("/") # the home route
 def index():
     context = {
-        'names' : ['Derek', 'Artem', 'Lakshmi', 'Vick', 'Shibani']
+        'posts' : Post.query.all()
     }
     return render_template('index.html', **context)
 
@@ -74,37 +74,17 @@ def profile():
     form = PostForm()
     context = {
        'form': form,
-       'posts' : Post.query.all()
+       'posts' : User.query.get(current_user.id).posts.all()
     }
     if form.validate_on_submit():
-        p = Post(
-            title = form.title.data,
-            content = form.content.data,
-            author = form.author.data
-        )
-        db.session.add(p)
+        # p = Post(
+        #     title = form.title.data,
+        #     content = form.content.data,
+        #     author = form.author.data
+        # )
+        db.session.add(Post(user_id=current_user.id, content=form.content.data, title=form.title.data))
         db.session.commit()
-        flash('Post has been created', 'alert alert-info')
+        flash('Your post has been created', 'alert alert-success')
         return redirect(url_for('profile'))
-    return render_template('new_post.html', **context)
-
-# @app.route("/new_post", methods=['GET', 'POST'])
-# @login_required
-# def new_post():
-#     form = PostForm()
-#     context = {
-#        'form': form,
-#        'posts' : Post.query.all()
-#     }
-#     if form.validate_on_submit():
-#         p = Post(
-#             title = form.title.data,
-#             content = form.content.data,
-#             author = form.author.data
-#         )
-#         db.session.add(p)
-#         db.session.commit()
-#         flash('Post has been created', 'alert alert-info')
-#         return redirect(url_for('profile'))
-#     return render_template('new_post.html', **context)
+    return render_template('profile.html', **context)
     

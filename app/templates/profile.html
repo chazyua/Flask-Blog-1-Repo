@@ -3,23 +3,42 @@
 {% block content %}
 
 <h1>Hello, {{ current_user.name }}</h1>
-<p>These are your posts so far...
-<br>Want to create a <a href="{{ url_for('new_post') }}">New Post</a> ?
-</p>
+<p>These are your posts so far...</p>
+
+<form method="POST" action="{{ url_for('profile') }}">
+    {{ form.hidden_tag() }}
+    <div class="form-row post-form">
+        <div class="col-2">
+            {{ form.title(class="form-control", placeholder="Title") }}
+        </div>
+        <div class="col-8">
+            {{ form.content(class="form-control", placeholder="What's on your mind?") }}
+        </div>
+        <div class="col">
+            {{ form.submit(class="btn btn-primary btn-block", placeholder="Post") }}
+        </div>   
+    </div>
+</form>
 
 {% if posts %}
 
-{% for post in posts %}
-    <div class="content-section">
-        <h3>{{ post.title }}</h3><hr>
-        {{ post.content }}<hr>
-        <i>{{ post.author }}</i><br>
-    </div>
-{% endfor %}
+    {% for post in posts %}
 
-{% else %}
-<h1>There's no posts available</h1>
+        <div class="media content-section">
+            <img src="https://placehold.it/64x64" class="mr-3", alt="..."><br>
+            <div class="media-body">
+                <i>{{ post.author.name }}</i><hr class="hrspacing">
+                <h5 class="mt-0">{{ post.title }}</h5>
+                {{ post.content }}               
+            </div>            
+        </div>
+        
+    {% endfor %}
+
+    {% else %}
+    <h1>There's no posts available</h1>
 
 {% endif %}
+
 {% endblock %}
 
